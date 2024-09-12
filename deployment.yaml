@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: #Contém metadados associados ao Deployment, como o nome do deployment. Aqui, o nome dado é hpa-deployment
+  name: hpa-deployment
+spec: #Define as especificações do Deployment. É aqui que são configurados os detalhes como o número de réplicas e os containers que o Deployment gerenciará.
+  replicas: 2
+  selector: #O seletor define como o Deployment encontra os pods que ele gerencia. Neste caso, ele procura por pods com a label app: hpa-app.
+    matchLabels:
+      app: hpa-app
+  template: #Define o template dos pods que serão gerenciados pelo Deployment.
+    metadata:
+      labels:
+        app: hpa-app
+    spec:
+      containers:
+      - name: hpa-app
+        image: luancavalcanti/hpaappv1:v1.0
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: "200m"
+          limits:
+            cpu: "500m"
+
+#Este Deployment cria dois pods executando a imagem luancavalcanti/hpaappv1:v1.0. Cada pod expõe a porta 80 e solicita 200 milicores de CPU, mas não pode consumir mais do que 500 milicores.

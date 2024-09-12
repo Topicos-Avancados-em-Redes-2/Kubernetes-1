@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hpa-service
+spec:
+  selector: #define quais pods serão associados ao Service com base nas labels. Neste caso, o Service selecionará os pods que têm a label app: hpa-app.
+    app: hpa-app #O Service se conecta aos pods gerenciados pelo Deployment configurados anteriormente, já que esses pods têm a mesma label app: hpa-app.
+  ports:
+    - protocol: TCP
+      port: 80 #Define a porta exposta pelo Service, que será a porta 80 dentro do cluster.
+      targetPort: 80 #Define a porta no container/pod para a qual o tráfego será encaminhado. No caso, a porta 80 é a porta exposta dentro dos containers dos pods (como especificado no Deployment).
+  type: ClusterIP #ClusterIP é o tipo de Service mais comum, que expõe o Service internamente no cluster, mas não o torna acessível externamente.
+
+  #ClusterIP cria um IP virtual dentro do cluster que permite que outros pods e componentes do cluster se comuniquem com os pods gerenciados por este Service. 
+  #Ele não é acessível de fora do cluster (para isso, você usaria outro tipo como NodePort ou LoadBalancer).

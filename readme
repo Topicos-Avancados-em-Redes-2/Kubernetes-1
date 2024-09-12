@@ -1,0 +1,11 @@
+Comandos para levantar a aplicação:
+
+k3d cluster create hpa-test
+
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+kubectl apply -f hpa.yaml
+
+kubectl port-forward service/hpa-service 8080:80
+hey -n 10000 -c 100 http://localhost:8080/
+kubectl get hpa
